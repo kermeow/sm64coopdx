@@ -231,26 +231,6 @@ static bool mod_fs_check_filepath(struct ModFs *modFs, const char *filepath) {
 }
 
 static bool mod_fs_check_file_content(struct ModFs *modFs, struct ModFsFile *file) {
-    if (!file->data.bin || file->size < 4) {
-        return true;
-    }
-
-    // Reject Windows executable files
-    if (memcmp(file->data.bin, "MZ", 2) == 0) {
-        mod_fs_raise_error(
-            "modPath: %s, filepath: %s - Binary file cannot start with \"MZ\" bytes", modFs->modPath, file->filepath
-        );
-        return false;
-    }
-
-    // Reject ELF files
-    if (memcmp(file->data.bin, "\177ELF", 4) == 0) {
-        mod_fs_raise_error(
-            "modPath: %s, filepath: %s - Binary file cannot start with \"\\x7fELF\" bytes", modFs->modPath, file->filepath
-        );
-        return false;
-    }
-
     return true;
 }
 
